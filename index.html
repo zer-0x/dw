@@ -117,13 +117,10 @@
                 logs("Отправляем запрос на сервер...");
 
                 $.ajax({
-                    // url: 'https://api.dance-world.online/api/ForumUsers/login', // Замените на ваш URL сервера
-                    url: 'api/engine', // Замените на ваш URL сервера
+                    url: 'https://api.dance-world.online/api/ForumUsers/login', 
                     type: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify({
-                        data: WebApp.initData,
-                        action: 'login',
                         email: username,
                         password: password,
                         site: true
