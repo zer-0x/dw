@@ -163,11 +163,18 @@
                 <p><strong>Всего времени на диване:</strong> <span id="totalSofaTimeSeconds"></span></p>
                 <p><strong>Был ли онлайн в "особое" время:</strong> <span id="isWasOnlineSpecialTime"></span></p>
                 <hr>
+                <h3>Premium</h3>
+                <p><strong>Был ли куплен Premium:</strong> <span id="isPremiumWasBought"></span></p>
+                <p><strong>Premium кончается:</strong> <span id="premiumEndAt"></span></p>
+                <p><strong>Цвет ника:</strong> <span id="nicknameColor"></span></p>
+                <hr>
                 <h3>Прочее</h3>
                 <p><strong>Рост:</strong> <span id="height"></span></p>
-                <p><strong>Возраст аккаунта:</strong> <span id="years"></span> года(лет)</p>
+                <p><strong>Пара:</strong> <span id="coupleNick"></span></p>
+                <p><strong>Обучение пройлено:</strong> <span id="isTutorialDisabled"></span></p>
+                <p><strong>?Повторяемые дни отдыха:</strong> <span id="repeatableRestDays"></span></p>
+                <p><strong>Возраст аккаунта:</strong> <span id="years"></span> год(а)/лет</p>
                 <p><strong>Участие в свадьбе:</strong> <span id="isParticipatedWedding"></span></p>
-                <p><strong>Был ли куплен Premium:</strong> <span id="isPremiumWasBought"></span></p>
                 <p><strong>Дней offline:</strong> <span id="daysOffline"></span></p>
             </div>
         </div>
@@ -276,15 +283,20 @@
                 $('#blockSong').text(profileData.blockSongUpload  ? 'Да' : 'Нет');
                 $('#isPremiumWasBought').text(profileData.isPremiumWasBought  ? 'Да' : 'Нет');
                 $('#height').text(profileData.commonInfo.height);
+                $('#isTutorialDisabled').text(profileData.isTutorialDisabled  ? 'Да' : 'Нет');
+                $('#repeatableRestDays').text(profileData.repeatableRestDays);
+                $('#nicknameColor').text(profileData.nicknameColor);
                 $('#songStrikes').text(profileData.badSongStrikes);
                 $('#hlevel').text(profileData.mainStats.hiddenLevel);
                 $('#level').text(profileData.mainStats.level);
+                $('#coupleNick').text(profileData.couple.nickname);
                 $('#experience').text(profileData.mainStats.experience);
                 $('#coins').text(profileData.mainStats.coins);
                 $('#cash').text(profileData.mainStats.cash);
                 $('#bonusCash').text(profileData.mainStats.bonusCash);
                 $('#songCoins').text(profileData.songCoins);
                 $('#years').text(profileData.years);
+                $('#premiumEndAt').text(formatDate(profileData.premiumEndAt));
                 $('#totalDanceTime').text(formatTime(profileData.totalDanceTimeSeconds));
                 $('#totalOnlineTime').text(formatTime(profileData.totalOnlineTimeSeconds));
                 $('#totalWaterPoolTime').text(formatTime(profileData.totalWaterPoolTimeSeconds));
