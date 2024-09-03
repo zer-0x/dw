@@ -108,16 +108,20 @@
                 <tbody></tbody>
             </table>
             <div class="profile-info">
+                <p><strong>Блокировки статистики:</strong> <span id="blockStatist"></span></p>
+                <p><strong>Проверка на бота:</strong> <span id="botCheck"></span></p>
                 <p><strong>Рост:</strong> <span id="height"></span> м</p>
                 <table width="100%">
                     <thead>
                         <tr>
-                            <td width="30%" align="center"><b>LVL</b></td>
-                            <td width="70%" align="center"><b>EXP</b></td>
+                            <td width="20%" align="center"><b>HLVL</b></td>
+                            <td width="20%" align="center"><b>LVL</b></td>
+                            <td width="60%" align="center"><b>EXP</b></td>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
+                            <td align="center"><span id="hlevel"></span></td>
                             <td align="center"><span id="level"></span></td>
                             <td align="center"><span id="experience"></span></td>
                         </tr>
@@ -232,7 +236,10 @@
                 // Заполнение данных профиля
                 $('#nickname').text(profileData.commonInfo.nickname);
                 $('#gender').text(profileData.commonInfo.gender === 'PGT_Female' ? 'Женщина' : 'Мужчина');
+                $('#blockStatist').text(profileData.blockStatistic ? 'Да' : 'Нет');
+                $('#botCheck').text(profileData.botCheckIsDisabled ? 'Выключена' : 'Включена');
                 $('#height').text(profileData.commonInfo.height);
+                $('#hlevel').text(profileData.mainStats.hiddenLevel);
                 $('#level').text(profileData.mainStats.level);
                 $('#experience').text(profileData.mainStats.experience);
                 $('#coins').text(profileData.mainStats.coins);
