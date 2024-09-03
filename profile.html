@@ -111,6 +111,18 @@
                         </tr>
                     </tbody>
                 </table>
+                <strong>Блокировки</strong>
+                <table id="bans-table">
+                    <thead>
+                    <tr>
+                        <th>Тип</th>
+                        <th>Дата</th>
+                        <th>Причина</th>
+                        <th>Пермач</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
                 <p><strong>Писне:</strong> <span id="coins"></span></p>
                 <p><strong>Ларце:</strong> <span id="cash"></span></p>
                 <p><strong>Бонусные ларце:</strong> <span id="bonusCash"></span></p>
@@ -166,6 +178,7 @@
                 
                 profileData = response;
                 showInfo(profileData);
+                fillBansTable(profileData.gamePlayerBans);
             },
             error: function(xhr, status, error) {
                 Telegram.WebApp.MainButton.hideProgress();
@@ -176,6 +189,39 @@
         });
 
 
+            // Функция для форматирования даты
+            function formatDate(dateString) {
+                const date = new Date(dateString);
+                return date.toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'Europe/Moscow' });
+            }
+
+            // Функция для заполнения таблицы
+            function fillBansTable(gamePlayerBans) {
+                const table = document.getElementById('bans-table').getElementsByTagName('tbody')[0];
+                table.innerHTML = '';
+
+                gamePlayerBans.forEach(ban => {
+                    const row = document.createElement('tr');
+
+                    const typeCell = document.createElement('td');
+                    typeCell.textContent = ban.type;
+                    row.appendChild(typeCell);
+
+                    const dateCell = document.createElement('td');
+                    dateCell.textContent = formatDate(ban.bannedUntilDate);
+                    row.appendChild(dateCell);
+
+                    const reasonCell = document.createElement('td');
+                    reasonCell.textContent = ban.banReason;
+                    row.appendChild(reasonCell);
+
+                    const permanentCell = document.createElement('td');
+                    permanentCell.textContent = ban.isPermanent ? 'Да' : 'Нет';
+                    row.appendChild(permanentCell);
+
+                    table.appendChild(row);
+                });
+            }
 
             // Функция для конвертации времени из секунд в часы, минуты и секунды
             function formatTime(seconds) {
