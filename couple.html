@@ -221,28 +221,28 @@
                 // $('#daysOffline').text(profileData.daysOffline);
                 // $('#id').text(profileData.id);
 
-                document.getElementById('partner-id').textContent = data.couple.id;
-                document.getElementById('partner-name').textContent = data.couple.nickname;
-                document.getElementById('partner-gender').textContent = data.couple.gender === 'PGT_Female' ? 'Женский' : 'Мужской';
-                document.getElementById('couple-id').textContent = data.gameCouple.id;
-                document.getElementById('couple-name').textContent = data.gameCouple.name;
-                document.getElementById('couple-description').textContent = data.gameCouple.description;
-                document.getElementById('couple-level').textContent = data.gameCouple.level;
-                document.getElementById('couple-experience').textContent = data.gameCouple.experience;
-                document.getElementById('couple-hearts').textContent = data.gameCouple.hearts;
-                document.getElementById('couple-dance-hearts').textContent = data.gameCouple.danceHearts;
+                document.getElementById('partner-id').textContent = profileData.couple.id;
+                document.getElementById('partner-name').textContent = profileData.couple.nickname;
+                document.getElementById('partner-gender').textContent = profileData.couple.gender === 'PGT_Female' ? 'Женский' : 'Мужской';
+                document.getElementById('couple-id').textContent = profileData.gameCouple.id;
+                document.getElementById('couple-name').textContent = profileData.gameCouple.name;
+                document.getElementById('couple-description').textContent = profileData.gameCouple.description;
+                document.getElementById('couple-level').textContent = profileData.gameCouple.level;
+                document.getElementById('couple-experience').textContent = profileData.gameCouple.experience;
+                document.getElementById('couple-hearts').textContent = profileData.gameCouple.hearts;
+                document.getElementById('couple-dance-hearts').textContent = profileData.gameCouple.danceHearts;
                 document.getElementById('couple-last-heart-received-date').textContent = formatDate(data.gameCouple.lastHeartReceivedDate);
-                document.getElementById('couple-current-ring').textContent = data.gameCouple.currentRing;
-                document.getElementById('couple-current-title').textContent = data.gameCouple.currentTitle;
-                document.getElementById('couple-love-level').textContent = data.gameCouple.loveLevel;
-                document.getElementById('couple-love-dances').textContent = data.gameCouple.loveDances;
-                document.getElementById('couple-primary-player-id').textContent = data.gameCouple.primaryPlayerId;
-                document.getElementById('couple-block-statistic').textContent = data.gameCouple.blockStatistic ? 'Да' : 'Нет';
-                document.getElementById('couple-love-level-visual-state').textContent = data.gameCouple.loveLevelVisualState ? 'Да' : 'Нет';
+                document.getElementById('couple-current-ring').textContent = profileData.gameCouple.currentRing;
+                document.getElementById('couple-current-title').textContent = profileData.gameCouple.currentTitle;
+                document.getElementById('couple-love-level').textContent = profileData.gameCouple.loveLevel;
+                document.getElementById('couple-love-dances').textContent = profileData.gameCouple.loveDances;
+                document.getElementById('couple-primary-player-id').textContent = profileData.gameCouple.primaryPlayerId;
+                document.getElementById('couple-block-statistic').textContent = profileData.gameCouple.blockStatistic ? 'Да' : 'Нет';
+                document.getElementById('couple-love-level-visual-state').textContent = profileData.gameCouple.loveLevelVisualState ? 'Да' : 'Нет';
                 document.getElementById('couple-created').textContent = formatDate(data.gameCouple.created);
                 document.getElementById('couple-modified').textContent = formatDate(data.gameCouple.modified);
                 document.getElementById('couple-love-last-received').textContent = formatDate(data.gameCouple.loveLastReceived);
-                document.getElementById('height').textContent = data.couple.height;
+                document.getElementById('height').textContent = profileData.couple.height;
             }
 
             
