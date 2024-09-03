@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900&display=swap">
+    <script>
+        WebApp=Telegram.WebApp;
+        var acctoken, userId;
+        if (localStorage.getItem("token") == null) {
+            window.location.href = 'index.html';
+        }else{
+            acctoken = localStorage.token;
+        }
+    
+        if (localStorage.getItem("uid") == null) {
+            window.location.href = 'index.html';
+        }else{
+            userId = localStorage.uid;
+        }
+    </script>
+    <title>Профиль</title>
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <style>
+        h3 {
+            text-align: center;
+        }
+        :root{
+            --bg: #250b2d;
+            --bg2: #67217c;
+            --shadow: rgb(166 48 185);
+            --border: #ffffff;
+            --font: #ffffff;
+        }
+        * {
+            font-family: "Roboto", serif;
+        }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #250b2d;
+        }
+        .profile-container-parrent {
+            margin: 5% 5% 20% 5%;
+            border-radius: 10px;
+            box-shadow: 0 0 10px 3px var(--shadow);
+        }
+
+        .profile-container {
+            padding: 20px;
+            text-align: center;
+            box-shadow: inset 0 0 10px 3px var(--shadow);
+            border: 0.1em solid white;
+            color: white;
+            border-radius: 10px;
+        }
+
+        .profile-info {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .profile-info p {
+            margin: 10px 0;
+        }
+
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            background-color: var(--bg2);
+            padding: 10px 0;
+        }
+
+        .nav-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .nav-button img {
+            width: 30px;
+            height: 30px;
+        }
+
+        .nav-button:hover img {
+            filter: brightness(1.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container-parrent">
+        <div class="profile-container">
+            <span id="couple-id"></span>
+            <h2 id="nickname">Пара</h2>
+            <hr>
+            <div class="profile-info">
+                <p><strong>ID партнера:</strong> <span id="partner-id"></span></p>
+                <p><strong>Партнер:</strong> <span id="partner-name"></span></p>
+                <p><strong>Пол партнера:</strong> <span id="partner-gender"></span></p>
+                <p><strong>Название пары:</strong> <span id="couple-name"></span></p>
+                <p><strong>Описание пары:</strong> <span id="couple-description"></span></p>
+                <p><strong>LVL пары:</strong> <span id="couple-level"></span></p>
+                <p><strong>Exp пары:</strong> <span id="couple-experience"></span></p>
+                <p><strong>Симпатия:</strong> <span id="couple-hearts"></span></p>
+                <p><strong>Сердца:</strong> <span id="couple-dance-hearts"></span></p>
+                <p><strong>Дата последнего получения сердца:</strong> <span id="couple-last-heart-received-date"></span></p>
+                <p><strong>Текущее кольцо:</strong> <span id="couple-current-ring"></span></p>
+                <p><strong>Текущий заголовок:</strong> <span id="couple-current-title"></span></p>
+                <p><strong>LVL любви:</strong> <span id="couple-love-level"></span></p>
+                <p><strong>Любовных танцев:</strong> <span id="couple-love-dances"></span></p>
+                <p><strong>Инициатор пары:</strong> <span id="couple-primary-player-id"></span></p>
+                <p><strong>Блокировка статистики:</strong> <span id="couple-block-statistic"></span></p>
+                <p><strong>Уровень любви Визуальное состояние:</strong> <span id="couple-love-level-visual-state"></span></p>
+                <p><strong>Создана:</strong> <span id="couple-created"></span></p>
+                <p><strong>Изменена:</strong> <span id="couple-modified"></span></p>
+                <p><strong>Последняя любовь:</strong> <span id="couple-love-last-received"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-bar">
+        <button class="nav-button" id="profile-btn" onclick="location.href='profile.html'>
+            <img src="img/card.svg" alt="Профиль">
+        </button>
+        <button class="nav-button" id="pair-btn" onclick="location.href='couple.html'">
+            <img src="img/coupleV3.svg" alt="Пара">
+        </button>
+        <button class="nav-button" id="club-btn">
+            <img src="img/club.png" alt="Клуб">
+        </button>
+        <button class="nav-button" id="online-btn">
+            <img src="img/online.png" alt="Онлайн">
+        </button>
+    </div>
+
+    <!-- <script src="script.js"></script>
+     -->
+    <script>
+        var profileData;
+       $(document).ready(function() {
+        
+        WebApp.expand();
+        WebApp.ready();
+
+
+        $.ajax({
+            url: 'https://api.dance-world.online/api/GamePlayers/get-full-data',
+            type: 'POST',
+            contentType: 'application/json',
+            headers: { 'Authorization': 'Bearer '+acctoken },
+            data: JSON.stringify({
+                userId: ""
+            }),
+            success: function(response) {
+                Telegram.WebApp.MainButton.hideProgress();
+                WebApp.MainButton.hide();
+                
+                profileData = response;
+                showInfo(profileData);
+                
+            },
+            error: function(xhr, status, error) {
+                Telegram.WebApp.MainButton.hideProgress();
+                WebApp.MainButton.hide();
+                // Обработка ошибок
+                // WebApp.showAlert('Ошибка запроса данных');
+            }
+        });
+
+
+            // Функция для форматирования даты
+            function formatDate(dateString) {
+                const date = new Date(dateString);
+                return date.toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'Europe/Moscow' });
+            }
+
+          
+
+            // Функция для конвертации времени из секунд в часы, минуты и секунды
+            function formatTime(seconds) {
+                const h = Math.floor(seconds / 3600);
+                const m = Math.floor((seconds % 3600) / 60);
+                const s = seconds % 60;
+                return h+"ч "+m+"м "+s+"с";
+            }
+
+            function showInfo(profileData){
+                // Заполнение данных профиля
+                // $('#nickname').text(profileData.commonInfo.nickname);
+                // $('#gender').text(profileData.commonInfo.gender === 'PGT_Female' ? 'Женщина' : 'Мужчина');
+                // $('#blockStatist').text(profileData.blockStatistic ? 'Да' : 'Нет');
+                // $('#botCheck').text(profileData.botCheckIsDisabled ? 'Выключена' : 'Включена');
+                // $('#isParticipatedWedding').text(profileData.isParticipatedWedding ? 'Да' : 'Нет');
+                // $('#isWasOnlineSpecialTime').text(profileData.isWasOnlineSpecialTime  ? 'Да' : 'Нет');
+                // $('#blockSong').text(profileData.blockSongUpload  ? 'Да' : 'Нет');
+                // $('#isPremiumWasBought').text(profileData.isPremiumWasBought  ? 'Да' : 'Нет');
+                // $('#height').text(profileData.commonInfo.height);
+                // $('#isTutorialDisabled').text(profileData.isTutorialDisabled  ? 'Да' : 'Нет');
+                // $('#repeatableRestDays').text(profileData.repeatableRestDays);
+                // $('#nicknameColor').text(profileData.nicknameColor);
+                // $('#songStrikes').text(profileData.badSongStrikes);
+                // $('#hlevel').text(profileData.mainStats.hiddenLevel);
+                // $('#level').text(profileData.mainStats.level);
+                // $('#coupleNick').text(profileData.couple.nickname);
+                // $('#experience').text(profileData.mainStats.experience);
+                // $('#coins').text(profileData.mainStats.coins);
+                // $('#cash').text(profileData.mainStats.cash);
+                // $('#bonusCash').text(profileData.mainStats.bonusCash);
+                // $('#songCoins').text(profileData.songCoins);
+                // $('#years').text(profileData.years);
+                // $('#premiumEndAt').text(formatDate(profileData.premiumEndAt));
+                // $('#totalDanceTime').text(formatTime(profileData.totalDanceTimeSeconds));
+                // $('#totalOnlineTime').text(formatTime(profileData.totalOnlineTimeSeconds));
+                // $('#totalWaterPoolTime').text(formatTime(profileData.totalWaterPoolTimeSeconds));
+                // $('#totalSofaTimeSeconds').text(formatTime(profileData.totalSofaTimeSeconds));
+                // $('#daysOffline').text(profileData.daysOffline);
+                // $('#id').text(profileData.id);
+
+                document.getElementById('partner-id').textContent = data.couple.id;
+                document.getElementById('partner-name').textContent = data.couple.nickname;
+                document.getElementById('partner-gender').textContent = data.couple.gender === 'PGT_Female' ? 'Женский' : 'Мужской';
+                document.getElementById('couple-id').textContent = data.gameCouple.id;
+                document.getElementById('couple-name').textContent = data.gameCouple.name;
+                document.getElementById('couple-description').textContent = data.gameCouple.description;
+                document.getElementById('couple-level').textContent = data.gameCouple.level;
+                document.getElementById('couple-experience').textContent = data.gameCouple.experience;
+                document.getElementById('couple-hearts').textContent = data.gameCouple.hearts;
+                document.getElementById('couple-dance-hearts').textContent = data.gameCouple.danceHearts;
+                document.getElementById('couple-last-heart-received-date').textContent = formatDate(data.gameCouple.lastHeartReceivedDate);
+                document.getElementById('couple-current-ring').textContent = data.gameCouple.currentRing;
+                document.getElementById('couple-current-title').textContent = data.gameCouple.currentTitle;
+                document.getElementById('couple-love-level').textContent = data.gameCouple.loveLevel;
+                document.getElementById('couple-love-dances').textContent = data.gameCouple.loveDances;
+                document.getElementById('couple-primary-player-id').textContent = data.gameCouple.primaryPlayerId;
+                document.getElementById('couple-block-statistic').textContent = data.gameCouple.blockStatistic ? 'Да' : 'Нет';
+                document.getElementById('couple-love-level-visual-state').textContent = data.gameCouple.loveLevelVisualState ? 'Да' : 'Нет';
+                document.getElementById('couple-created').textContent = formatDate(data.gameCouple.created);
+                document.getElementById('couple-modified').textContent = formatDate(data.gameCouple.modified);
+                document.getElementById('couple-love-last-received').textContent = formatDate(data.gameCouple.loveLastReceived);
+                document.getElementById('height').textContent = data.couple.height;
+            }
+
+            
+        });
+    </script>
+</body>
+</html>
