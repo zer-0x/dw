@@ -131,10 +131,16 @@
                 <p><strong>Ларце:</strong> <span id="cash"></span></p>
                 <p><strong>Бонусные ларце:</strong> <span id="bonusCash"></span></p>
                 <p><strong>Жетонов загрузки музыки:</strong> <span id="songCoins"></span></p>
+                <p><strong>Блокировка загрузки музыки:</strong> <span id="blockSong"></span></p>
+                <p><strong>Страйки загрузки музыки:</strong> <span id="songStrikes"></span></p>
                 <p><strong>Возраст аккаунта:</strong> <span id="years"></span> лет</p>
                 <p><strong>Всего времени в танце:</strong> <span id="totalDanceTime"></span></p>
                 <p><strong>Всего времени онлайн:</strong> <span id="totalOnlineTime"></span></p>
                 <p><strong>Всего времени в воде:</strong> <span id="totalWaterPoolTime"></span></p>
+                <p><strong>Всего времени на диване:</strong> <span id="totalSofaTimeSeconds"></span></p>
+                <p><strong>Участие в свадьбе:</strong> <span id="isParticipatedWedding"></span></p>
+                <p><strong>Был ли онлайн в "особое" время:</strong> <span id="isWasOnlineSpecialTime"></span></p>
+                <p><strong>Был ли куплен Premium:</strong> <span id="isPremiumWasBought"></span></p>
                 <p><strong>Дней offline:</strong> <span id="daysOffline"></span></p>
             </div>
         </div>
@@ -238,7 +244,12 @@
                 $('#gender').text(profileData.commonInfo.gender === 'PGT_Female' ? 'Женщина' : 'Мужчина');
                 $('#blockStatist').text(profileData.blockStatistic ? 'Да' : 'Нет');
                 $('#botCheck').text(profileData.botCheckIsDisabled ? 'Выключена' : 'Включена');
+                $('#isParticipatedWedding').text(profileData.isParticipatedWedding ? 'Да' : 'Нет');
+                $('#isWasOnlineSpecialTime').text(profileData.isWasOnlineSpecialTime  ? 'Да' : 'Нет');
+                $('#blockSong').text(profileData.blockSongUpload  ? 'Да' : 'Нет');
+                $('#isPremiumWasBought').text(profileData.isPremiumWasBought  ? 'Да' : 'Нет');
                 $('#height').text(profileData.commonInfo.height);
+                $('#badSongStrikes').text(profileData.songStrikes);
                 $('#hlevel').text(profileData.mainStats.hiddenLevel);
                 $('#level').text(profileData.mainStats.level);
                 $('#experience').text(profileData.mainStats.experience);
@@ -250,6 +261,7 @@
                 $('#totalDanceTime').text(formatTime(profileData.totalDanceTimeSeconds));
                 $('#totalOnlineTime').text(formatTime(profileData.totalOnlineTimeSeconds));
                 $('#totalWaterPoolTime').text(formatTime(profileData.totalWaterPoolTimeSeconds));
+                $('#totalSofaTimeSeconds').text(formatTime(profileData.totalSofaTimeSeconds));
                 $('#daysOffline').text(profileData.daysOffline);
                 $('#id').text(profileData.id);
             }
