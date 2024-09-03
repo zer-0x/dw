@@ -6,175 +6,252 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900&display=swap">
-    <title>Dance World</title>
+    <script>
+        WebApp=Telegram.WebApp;
+        var acctoken, userId;
+        if (localStorage.getItem("token") == null) {
+            window.location.href = 'index.html';
+        }else{
+            acctoken = localStorage.token;
+        }
+    
+        if (localStorage.getItem("uid") == null) {
+            window.location.href = 'index.html';
+        }else{
+            userId = localStorage.uid;
+        }
+    </script>
+    <title>Профиль</title>
+    <!-- <link rel="stylesheet" href="styles.css"> -->
     <style>
+        :root{
+            --bg: #250b2d;
+            --bg2: #67217c;
+            --shadow: rgb(166 48 185);
+            --border: #ffffff;
+            --font: #ffffff;
+        }
         * {
-    font-family: "Roboto", serif;
-}
+            font-family: "Roboto", serif;
+        }
         body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #250b2d;
-    font-family: Arial, sans-serif;
-}
-.logo{
-    background: url(https://dance-world.online/logo-x2.webp);
-    width: 100%;
-    height: 4em;
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-}
-.login-container-parrent {
-    /* background: #ff99cc; */
-    margin: 0 5%;
-    border-radius: 10px;
-    box-shadow: 0 0 10px 3px rgb(166 48 185);
-}
-.login-container {
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: inset 0 0 10px 3px rgb(166 48 185);
-    border: 0.1em solid white;
-    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
-    text-align: center;
-}
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #250b2d;
+        }
+        .profile-container-parrent {
+            margin: 5% 5% 0 5%;
+            border-radius: 10px;
+            box-shadow: 0 0 10px 3px var(--shadow);
+        }
 
-.login-container h2 {
-    margin-bottom: 20px;
-    color: #eb7ffa;
-}
+        .profile-container {
+            padding: 20px;
+            text-align: center;
+            box-shadow: inset 0 0 10px 3px var(--shadow);
+            border: 0.1em solid white;
+            color: white;
+            border-radius: 10px;
+        }
 
-.login-container input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: none;
-    border-radius: 5px;
-    box-sizing: border-box;
-}
+        .profile-info {
+            text-align: left;
+            margin-top: 20px;
+        }
 
-.parrent-button{
-    border-radius: 5px;
-    box-shadow: 0 0 10px 3px rgb(166 48 185);
-}
+        .profile-info p {
+            margin: 10px 0;
+        }
 
-.login-container .parrent-button button {
-    width: 100%;
-    padding: 10px;
-    box-shadow: inset 0 0 10px 3px rgb(166 48 185);
-    border: 0.1em solid white;
-    background: #250b2d;
-    /* border: none; */
-    border-radius: 5px;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-}
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            background-color: var(--bg2);
+            padding: 10px 0;
+        }
 
-.login-container .parrent-button button:hover {
-    background: rgb(166 48 185);
-}
+        .nav-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
 
+        .nav-button img {
+            width: 30px;
+            height: 30px;
+        }
+
+        .nav-button:hover img {
+            filter: brightness(1.2);
+        }
     </style>
 </head>
 <body>
-    <div class="login-container-parrent">
-        <div class="login-container">
-            <div class="logo"></div>
-            <h2>Авторизация</h2>
-            <form id="loginForm">
-                <input type="text" id="username" placeholder="E-mail" required>
-                <input type="password" id="password" placeholder="Пароль" required>
-                <div class="parrent-button"><button type="submit">Войти</button></div>
-            </form>
+    <div class="profile-container-parrent">
+        <div class="profile-container">
+            <span id="id"></span>
+            <h2 id="nickname">Профиль</h2>
+            <span id="gender"></span>
+            <div class="profile-info">
+                <p><strong>Рост:</strong> <span id="height"></span> м</p>
+                <table width="100%">
+                    <thead>
+                        <tr>
+                            <td width="30%" align="center"><b>LVL</b></td>
+                            <td width="70%" align="center"><b>EXP</b></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td align="center"><span id="level"></span></td>
+                            <td align="center"><span id="experience"></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <strong>Блокировки</strong>
+                <table id="bans-table">
+                    <thead>
+                    <tr>
+                        <th>Тип</th>
+                        <th>Дата</th>
+                        <th>Причина</th>
+                        <th>Пермач</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <p><strong>Писне:</strong> <span id="coins"></span></p>
+                <p><strong>Ларце:</strong> <span id="cash"></span></p>
+                <p><strong>Бонусные ларце:</strong> <span id="bonusCash"></span></p>
+                <p><strong>Жетонов загрузки музыки:</strong> <span id="songCoins"></span></p>
+                <p><strong>Возраст аккаунта:</strong> <span id="years"></span> лет</p>
+                <p><strong>Всего времени в танце:</strong> <span id="totalDanceTime"></span></p>
+                <p><strong>Всего времени онлайн:</strong> <span id="totalOnlineTime"></span></p>
+                <p><strong>Всего времени в воде:</strong> <span id="totalWaterPoolTime"></span></p>
+                <p><strong>Дней offline:</strong> <span id="daysOffline"></span></p>
+            </div>
         </div>
     </div>
-    <!-- <script src="script.js"></script> -->
+
+    <div class="nav-bar">
+        <button class="nav-button" id="profile-btn">
+            <img src="img/card.svg" alt="Профиль">
+        </button>
+        <button class="nav-button" id="pair-btn">
+            <img src="img/coupleV3.svg" alt="Пара">
+        </button>
+        <button class="nav-button" id="club-btn">
+            <img src="img/club.png" alt="Клуб">
+        </button>
+        <button class="nav-button" id="online-btn">
+            <img src="img/online.png" alt="Онлайн">
+        </button>
+        <button class="nav-button" id="top-btn">
+            <img src="img/top.png" alt="Топ">
+        </button>
+    </div>
+
+    <!-- <script src="script.js"></script>
+     -->
     <script>
-        var tmp;
-        $(document).ready(function() {
-
-            WebApp=Telegram.WebApp;
-            WebApp.expand();
-            WebApp.ready();
-
-            $('#loginForm').on('submit', function(event) {
-                event.preventDefault();
-
-                const username = $('#username').val();
-                const password = $('#password').val();
-
-                // Show loading indicator
-                WebApp.MainButton.show();
-                WebApp.MainButton.setText("Загрузка..");
-                WebApp.MainButton.color="#a630b9";
-                Telegram.WebApp.MainButton.showProgress();
-
-                logs("Отправляем запрос на сервер...");
-
-                $.ajax({
-                    url: 'https://api.dance-world.online/api/ForumUsers/login', // Замените на ваш URL сервера
-                    // url: 'api/engine', // Замените на ваш URL сервера
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                        data: WebApp.initData,
-                        action: 'login',
-                        email: username,
-                        password: password,
-                        site: true
-                    }),
-                    success: function(response) {
-                        Telegram.WebApp.MainButton.hideProgress();
-                        WebApp.MainButton.hide();
-                        let data;
-                        data = response;
-                        tmp = data;
-                        // try {
-                        //     data = JSON.parse(data);
-                        //     logs("Поступил JSON-ответ");
-                        // } catch (error) {
-                        //     console.error('Ошибка при парсинге ответа от сервера:', error);
-                        //     return;
-                        // }
-
-                        if (data.hasOwnProperty('isGood')) {
-                            if (data.isGood === true) {
-                                logs("Успешно зашли в аккаунт");
-                                localStorage.setItem('token', data.id);
-                                localStorage.setItem('uid', data.userId);
-                                window.location.href="profile.html?v=03";
-                            }
-                        } else if (data.hasOwnProperty('error')) {
-                            if (data.error.statusCode === 401) {
-                                logs("Ошибка авторизации.\nНеверный E-mail или пароль");
-                                Telegram.WebApp.MainButton.hideProgress();
-                                WebApp.MainButton.hide();
-                                WebApp.showAlert('Ошибка авторизации.\nНеверный E-mail или пароль');
-                            } else {
-                                console.error('Ошибка от сервера:', data.error);
-                            }
-                        } else {
-                            console.error('Неожиданный ответ от сервера:', data);
-                        }
-                    }
-                });
-            });
-        });
-
-        WebApp=Telegram.WebApp;
+        var profileData;
+       $(document).ready(function() {
+        
         WebApp.expand();
         WebApp.ready();
 
-        var timestamp;
-        function logs(msg) {
-            timestamp = new Date().toLocaleString();
-            console.log(`%c[${timestamp}] - [VEG] > `+msg, "color: #c268fa; font-size: 0.8rem; font-weight: bold");
-        }
+
+        $.ajax({
+            url: 'https://api.dance-world.online/api/GamePlayers/get-full-data',
+            type: 'POST',
+            contentType: 'application/json',
+            headers: { 'Authorization': 'Bearer '+acctoken },
+            data: JSON.stringify({
+                userId: ""
+            }),
+            success: function(response) {
+                Telegram.WebApp.MainButton.hideProgress();
+                WebApp.MainButton.hide();
+                
+                profileData = response;
+                showInfo(profileData);
+                fillBansTable(profileData.gamePlayerBans);
+            },
+            error: function(xhr, status, error) {
+                Telegram.WebApp.MainButton.hideProgress();
+                WebApp.MainButton.hide();
+                // Обработка ошибок
+                // WebApp.showAlert('Ошибка запроса данных');
+            }
+        });
+
+
+            // Функция для форматирования даты
+            function formatDate(dateString) {
+                const date = new Date(dateString);
+                return date.toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'Europe/Moscow' });
+            }
+
+            // Функция для заполнения таблицы
+            function fillBansTable(gamePlayerBans) {
+                const table = document.getElementById('bans-table').getElementsByTagName('tbody')[0];
+                table.innerHTML = '';
+
+                gamePlayerBans.forEach(ban => {
+                    const row = document.createElement('tr');
+
+                    const typeCell = document.createElement('td');
+                    typeCell.textContent = ban.type;
+                    row.appendChild(typeCell);
+
+                    const dateCell = document.createElement('td');
+                    dateCell.textContent = formatDate(ban.bannedUntilDate);
+                    row.appendChild(dateCell);
+
+                    const reasonCell = document.createElement('td');
+                    reasonCell.textContent = ban.banReason;
+                    row.appendChild(reasonCell);
+
+                    const permanentCell = document.createElement('td');
+                    permanentCell.textContent = ban.isPermanent ? 'Да' : 'Нет';
+                    row.appendChild(permanentCell);
+
+                    table.appendChild(row);
+                });
+            }
+
+            // Функция для конвертации времени из секунд в часы, минуты и секунды
+            function formatTime(seconds) {
+                const h = Math.floor(seconds / 3600);
+                const m = Math.floor((seconds % 3600) / 60);
+                const s = seconds % 60;
+                return h+"ч "+m+"м "+s+"с";
+            }
+
+            function showInfo(profileData){
+                // Заполнение данных профиля
+                $('#nickname').text(profileData.commonInfo.nickname);
+                $('#gender').text(profileData.commonInfo.gender === 'PGT_Female' ? 'Женщина' : 'Мужчина');
+                $('#height').text(profileData.commonInfo.height);
+                $('#level').text(profileData.mainStats.level);
+                $('#experience').text(profileData.mainStats.experience);
+                $('#coins').text(profileData.mainStats.coins);
+                $('#cash').text(profileData.mainStats.cash);
+                $('#bonusCash').text(profileData.mainStats.bonusCash);
+                $('#songCoins').text(profileData.songCoins);
+                $('#years').text(profileData.years);
+                $('#totalDanceTime').text(formatTime(profileData.totalDanceTimeSeconds));
+                $('#totalOnlineTime').text(formatTime(profileData.totalOnlineTimeSeconds));
+                $('#totalWaterPoolTime').text(formatTime(profileData.totalWaterPoolTimeSeconds));
+                $('#daysOffline').text(profileData.daysOffline);
+                $('#id').text(profileData.id);
+            }
+
+            
+        });
     </script>
 </body>
 </html>
