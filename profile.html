@@ -99,6 +99,33 @@
             <h2 id="nickname">Профиль</h2>
             <span id="gender"></span><br><br>
             <hr>
+            <p><strong>E-mail:</strong> <span id="email"></span></p>
+            <p><strong>login:</strong> <span id="login"></span></p>
+            <p><strong>birthdayDate:</strong> <span id="birthdayDate"></span></p>
+            <p><strong>Последний IP:</strong> <span id="lastIP"></span></p>
+            <p><strong>Номер оборудования:</strong> <span id="currentHardware"></span><br><strong>p.s. В игре при входе в аккаунт собирается информация о вашем ПК, регистрируется на сервере и присваивается уникальный номер</strong></p>
+            <hr>
+            <h3>История E-mail</h3>
+            <table id="email-table">
+                <thead>
+                    <tr>
+                        <th>E-mail <span id="countEmail"></span></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <hr>
+            <h3>История IP</h3>
+            <table id="ip-table">
+                <thead>
+                    <tr>
+                        <th>IP <span id="countIP"></span></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+            <hr>
             <h3>Блокировки</h3>
             <table id="bans-table">
                 <thead>
@@ -204,6 +231,28 @@
         WebApp.expand();
         WebApp.ready();
 
+        $.ajax({
+            url: 'https://api.dance-world.online/api/ForumUsers/'+localStorage.uid,
+            type: 'POST',
+            contentType: 'application/json',
+            headers: { 'Authorization': 'Bearer '+acctoken },
+            data: JSON.stringify({
+                userId: ""
+            }),
+            success: function(response) {
+                // Telegram.WebApp.MainButton.hideProgress();
+                // WebApp.MainButton.hide();
+                
+                profileData = response;
+                showAccInfo(profileData);
+            },
+            error: function(xhr, status, error) {
+                // Telegram.WebApp.MainButton.hideProgress();
+                // WebApp.MainButton.hide();
+                // Обработка ошибок
+                // WebApp.showAlert('Ошибка запроса данных');
+            }
+        });
 
         $.ajax({
             url: 'https://api.dance-world.online/api/GamePlayers/get-full-data',
@@ -303,6 +352,69 @@
                 $('#totalSofaTimeSeconds').text(formatTime(profileData.totalSofaTimeSeconds));
                 $('#daysOffline').text(profileData.daysOffline);
                 $('#id').text(profileData.id);
+            }
+
+            function showAccInfo(profileData){
+                // Заполнение данных профиля
+                $('#email').text(profileData.email);
+                $('#login').text(profileData.login);
+                $('#birthdayDate').text(formatDate(profileData.birthdayDate));
+                $('#lastIP').text(profileData.lastIP);
+                $('#currentHardware').text(profileData.currentHardware);
+                $('#countEmail').text(profileData.emailsHistory.length);
+
+                const emailTable = document.getElementById('email-table');
+                const emailTableBody = emailTable.getElementsByTagName('tbody')[0];
+                emailTableBody.innerHTML = '';
+
+                if (profileData.emailsHistory.length === 0) {
+                    // Если список IP-адресов пуст, добавляем строку с текстом "(IP не изменялся)"
+                    const row = document.createElement('tr');
+                    const cell = document.createElement('td');
+                    cell.textContent = '(Не изменялся)';
+                    row.appendChild(cell);
+                    emailTableBody.appendChild(row);
+                } else {
+                    // Добавляем IP-адреса в таблицу
+                    for (const ip of profileData.emailsHistory) {
+                        const row = document.createElement('tr');
+                        const cell = document.createElement('td');
+                        cell.textContent = ip;
+                        row.appendChild(cell);
+                        emailTableBody.appendChild(row);
+                    }
+                }
+
+                // Обновляем счетчик IP-адресов
+                document.getElementById('countEmail').textContent = `(${profileData.emailsHistory.length})`;
+
+                const ipTable = document.getElementById('ip-table');
+                const ipTableBody = ipTable.getElementsByTagName('tbody')[0];
+
+                // Очищаем таблицу
+                ipTableBody.innerHTML = '';
+
+                if (profileData.ipHistory.length === 0) {
+                    // Если список IP-адресов пуст, добавляем строку с текстом "(IP не изменялся)"
+                    const row = document.createElement('tr');
+                    const cell = document.createElement('td');
+                    cell.textContent = '(IP не изменялся)';
+                    row.appendChild(cell);
+                    ipTableBody.appendChild(row);
+                } else {
+                    // Добавляем IP-адреса в таблицу
+                    for (const ip of profileData.ipHistory) {
+                        const row = document.createElement('tr');
+                        const cell = document.createElement('td');
+                        cell.textContent = ip;
+                        row.appendChild(cell);
+                        ipTableBody.appendChild(row);
+                    }
+                }
+
+                // Обновляем счетчик IP-адресов
+                document.getElementById('countIP').textContent = `(${profileData.ipHistory.length})`;
+
             }
 
             
