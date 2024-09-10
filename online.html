@@ -185,7 +185,7 @@
                 const onlineTable = document.getElementById('online-table');
                 const onlineTableBody = onlineTable.getElementsByTagName('tbody')[0];
 
-                bansTableBody.innerHTML = '';
+                onlineTableBody.innerHTML = '';
 
                 // Заполняем таблицу данными
                 for (const player of profileData.result) {
@@ -211,7 +211,7 @@
                     clubCell.textContent = player.clubName;
                     row.appendChild(clubCell);
 
-                    bansTableBody.appendChild(row);
+                    onlineTableBody.appendChild(row);
                 }
 
             }
