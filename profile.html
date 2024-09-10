@@ -233,7 +233,7 @@
 
         $.ajax({
             url: 'https://api.dance-world.online/api/ForumUsers/'+localStorage.uid,
-            type: 'POST',
+            type: 'GET',
             contentType: 'application/json',
             headers: { 'Authorization': 'Bearer '+acctoken },
             data: JSON.stringify({
