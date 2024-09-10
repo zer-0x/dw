@@ -193,36 +193,6 @@
             }
 
             function showInfo(profileData){
-                // Заполнение данных профиля
-                // $('#nickname').text(profileData.commonInfo.nickname);
-                // $('#gender').text(profileData.commonInfo.gender === 'PGT_Female' ? 'Женщина' : 'Мужчина');
-                // $('#blockStatist').text(profileData.blockStatistic ? 'Да' : 'Нет');
-                // $('#botCheck').text(profileData.botCheckIsDisabled ? 'Выключена' : 'Включена');
-                // $('#isParticipatedWedding').text(profileData.isParticipatedWedding ? 'Да' : 'Нет');
-                // $('#isWasOnlineSpecialTime').text(profileData.isWasOnlineSpecialTime  ? 'Да' : 'Нет');
-                // $('#blockSong').text(profileData.blockSongUpload  ? 'Да' : 'Нет');
-                // $('#isPremiumWasBought').text(profileData.isPremiumWasBought  ? 'Да' : 'Нет');
-                // $('#height').text(profileData.commonInfo.height);
-                // $('#isTutorialDisabled').text(profileData.isTutorialDisabled  ? 'Да' : 'Нет');
-                // $('#repeatableRestDays').text(profileData.repeatableRestDays);
-                // $('#nicknameColor').text(profileData.nicknameColor);
-                // $('#songStrikes').text(profileData.badSongStrikes);
-                // $('#hlevel').text(profileData.mainStats.hiddenLevel);
-                // $('#level').text(profileData.mainStats.level);
-                // $('#coupleNick').text(profileData.couple.nickname);
-                // $('#experience').text(profileData.mainStats.experience);
-                // $('#coins').text(profileData.mainStats.coins);
-                // $('#cash').text(profileData.mainStats.cash);
-                // $('#bonusCash').text(profileData.mainStats.bonusCash);
-                // $('#songCoins').text(profileData.songCoins);
-                // $('#years').text(profileData.years);
-                // $('#premiumEndAt').text(formatDate(profileData.premiumEndAt));
-                // $('#totalDanceTime').text(formatTime(profileData.totalDanceTimeSeconds));
-                // $('#totalOnlineTime').text(formatTime(profileData.totalOnlineTimeSeconds));
-                // $('#totalWaterPoolTime').text(formatTime(profileData.totalWaterPoolTimeSeconds));
-                // $('#totalSofaTimeSeconds').text(formatTime(profileData.totalSofaTimeSeconds));
-                // $('#daysOffline').text(profileData.daysOffline);
-                // $('#id').text(profileData.id);
 
                 document.getElementById('partner-id').textContent = profileData.couple.id;
                 document.getElementById('partner-name').textContent = profileData.couple.nickname;
@@ -234,7 +204,7 @@
                 document.getElementById('couple-experience').textContent = profileData.gameCouple.experience;
                 document.getElementById('couple-hearts').textContent = profileData.gameCouple.hearts;
                 document.getElementById('couple-dance-hearts').textContent = profileData.gameCouple.danceHearts;
-                document.getElementById('couple-last-heart-received-date').textContent = formatDate(data.gameCouple.lastHeartReceivedDate);
+                document.getElementById('couple-last-heart-received-date').textContent = formatDate(profileData.gameCouple.lastHeartReceivedDate);
                 document.getElementById('couple-current-ring').textContent = profileData.gameCouple.currentRing;
                 document.getElementById('couple-current-title').textContent = profileData.gameCouple.currentTitle;
                 document.getElementById('couple-love-level').textContent = profileData.gameCouple.loveLevel;
@@ -242,9 +212,9 @@
                 document.getElementById('couple-primary-player-id').textContent = profileData.gameCouple.primaryPlayerId;
                 document.getElementById('couple-block-statistic').textContent = profileData.gameCouple.blockStatistic ? 'Да' : 'Нет';
                 document.getElementById('couple-love-level-visual-state').textContent = profileData.gameCouple.loveLevelVisualState ? 'Да' : 'Нет';
-                document.getElementById('couple-created').textContent = formatDate(data.gameCouple.created);
-                document.getElementById('couple-modified').textContent = formatDate(data.gameCouple.modified);
-                document.getElementById('couple-love-last-received').textContent = formatDate(data.gameCouple.loveLastReceived);
+                document.getElementById('couple-created').textContent = formatDate(profileData.gameCouple.created);
+                document.getElementById('couple-modified').textContent = formatDate(profileData.gameCouple.modified);
+                document.getElementById('couple-love-last-received').textContent = formatDate(profileData.gameCouple.loveLastReceived);
                 document.getElementById('height').textContent = profileData.couple.height;
             }
 
