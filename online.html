@@ -99,7 +99,7 @@
     <div class="profile-container-parrent">
         <div class="profile-container">
             <span id="couple-id"></span>
-            <h2 id="nickname">Online</h2>
+            <h2 id="nickname">Online <span id="countOnline"></span></h2>
             <hr>
             <div class="profile-info">
                 <table id="online-table">
@@ -182,6 +182,7 @@
             }
 
             function showInfo(profileData){
+                $('#countOnline').text(profileData.result.length);
                 const onlineTable = document.getElementById('online-table');
                 const onlineTableBody = onlineTable.getElementsByTagName('tbody')[0];
 
